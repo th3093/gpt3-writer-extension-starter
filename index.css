@@ -5,3 +5,7 @@ body {
 #key_entered {
     display: none;
 }
+
+#copy_to_clipboard {
+    display:none;
+}
