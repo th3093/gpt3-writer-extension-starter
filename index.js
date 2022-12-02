@@ -42,3 +42,38 @@ checkForKey().then((response) => {
       document.getElementById('key_entered').style.display = 'block';
     }
 });
+
+const addHistory = (content) => {
+  // Find Calmly editor input section
+document.getElementById('copy_to_clipboard').style.display = 'block';
+const element = document.getElementsById('gen_result');
+
+element.value = content;
+}
+
+const copyToClipboard = () => {
+  console.log(document.getElementById('gen_result').value);
+  debugger;
+  navigator.clipboard.writeText(document.getElementById('gen_result').value);
+}
+
+
+
+chrome.runtime.onMessage.addListener(
+  // This is the message listener
+  (request, sender, sendResponse) => {
+    if (request.message === 'addHistory') {
+      const { content } = request;
+			
+      // Call this insert function
+      const result = addHistory(content);
+			
+      // If something went wrong, send a failes status
+      if (!result) {
+        sendResponse({ farewell: 'failed' });
+      }
+
+      sendResponse({ farewell: 'success' });
+    }
+  }
+);

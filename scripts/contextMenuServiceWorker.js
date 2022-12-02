@@ -27,6 +27,12 @@ const getKey = () => {
     });
   };
 
+  const sendMessageToIndex = (content) => {
+    console.log(content);
+    chrome.runtime.sendMessage({message: 'addHistory', content}, (response) => {console.log(response.farewell);});
+    //console.log(response.farewell);
+  };
+
 const generate = async (prompt) => {
   // Get your API key from storage
   const key = await getKey();
@@ -55,7 +61,7 @@ const generate = async (prompt) => {
 const generateCompletionAction = async (info) => {
     try {
          // Send mesage with generating text (this will be like a loading indicator)
-        sendMessage('generating...');
+        sendMessageToIndex('generating...');
       const { selectionText } = info;
       const basePromptPrefix = `
       Write me a detailed table of contents for a blog post with the title below.
@@ -77,7 +83,7 @@ const generateCompletionAction = async (info) => {
 
     // Call your second prompt
     const secondPromptCompletion = await generate(secondPrompt);
-    sendMessage(secondPromptCompletion.text);
+    sendMessageToIndex(secondPromptCompletion.text);
       // Let's see what we get!
      console.log(baseCompletion.text)
     } catch (error) {
